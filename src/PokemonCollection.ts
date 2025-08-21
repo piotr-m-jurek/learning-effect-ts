@@ -1,8 +1,8 @@
-import { Context, Layer, type Array } from "effect";
+import { Effect } from "effect";
 
-export class PokemonCollection extends Context.Tag("PokemonCollection")<
-  PokemonCollection,
-  Array.NonEmptyArray<string>
->() {
-    static readonly Live = Layer.succeed(this, ["staryu", "charizard", "pikachu"])
-}
+export class PokemonCollection extends Effect.Service<PokemonCollection>()(
+    "PokemonCollection",
+    {
+        succeed: ['charmander', 'pikachu']
+    }
+) {}

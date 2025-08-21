@@ -13,11 +13,11 @@ const program = Effect.gen(function* () {
 })
 
 
-// const MainLayer = Layer.mergeAll(PokeApi.Live)
-// const runnable = program.pipe(Effect.provide(MainLayer))
+const MainLayer = Layer.mergeAll(PokeApi.Live)
+const runnable = program.pipe(Effect.provide(MainLayer))
 
-const MockLayer = Layer.mergeAll(PokeApi.Mock)
-const runnable = program.pipe(Effect.provide(MockLayer))
+// const MockLayer = Layer.mergeAll(PokeApi.Mock)
+// const runnable = program.pipe(Effect.provide(MockLayer))
 
 
 const main = runnable.pipe(
