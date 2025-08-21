@@ -1,5 +1,9 @@
 import { Data, Effect, Schema, } from 'effect'
 
+// TODO: wrap in a dependency
+import dotenv from 'dotenv'
+dotenv.config({quiet: true})
+// ====
 
 class Pokemon extends Schema.Class<Pokemon>("Pokemon")({
     id: Schema.Number,
