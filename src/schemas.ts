@@ -1,6 +1,6 @@
 import * as Schema from 'effect/Schema'
 
-class Pokemon extends Schema.Class<Pokemon>("Pokemon")({
+export class Pokemon extends Schema.Class<Pokemon>("Pokemon")({
     id: Schema.Number,
     order: Schema.Number,
     name: Schema.String,
