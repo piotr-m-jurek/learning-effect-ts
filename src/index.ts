@@ -17,18 +17,24 @@ const jsonRespnse = (response: Response) =>
         catch: () => new JsonError()
     })
 
-const main = fetchRequest.pipe(
-    Effect.filterOrFail(
-        response => response.ok,
-        () => new ResponseNotOk()
-    ),
-    Effect.flatMap(jsonRespnse),
+const program = Effect.gen(function* () {
+    const response = yield* fetchRequest;
+
+    if (!response.ok) {
+        return yield* new ResponseNotOk()
+    }
+
+    return yield* jsonRespnse(response)
+})
+
+
+const main = program.pipe(
+
     Effect.catchTags({
         FetchError: () => Effect.succeed("There was a fetch error"),
         JsonError: () => Effect.succeed("There was a json error"),
         ResponseNotOk: () => Effect.succeed("Response returned not ok")
     })
-)
-
+    )
 
 Effect.runPromise(main).then(console.log)
