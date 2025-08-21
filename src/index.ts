@@ -1,17 +1,26 @@
-import { Console, Effect, } from 'effect'
+import { Console, Data, Effect, } from 'effect'
 
-const fetchRequest = Effect.tryPromise(
-    () => fetch("https://pokeapi.co/api/v2/pokemon/garchomp/"))
+class FetchError extends Data.TaggedError("FetchError") {}
+class JsonError extends Data.TaggedError("JsonError") {}
+
+const fetchRequest = Effect.tryPromise({
+    try: () => fetch("https://pokeapi.co/api/v2/pokemon/garchomp/"),
+    catch: () => new FetchError()
+})
 
 const jsonRespnse = (response: Response) => 
-    Effect.tryPromise(() => response.json())
+    Effect.tryPromise({
+        try: () => response.json(),
+        catch: () => new JsonError()
+    })
 
 const main = fetchRequest.pipe(
     Effect.flatMap(jsonRespnse),
-    Effect.catchTag("UnknownException", () => Effect.succeed(
-        () => Console.log("FAILED ON UNKNOWN EXEPTION"))
-    )
+    Effect.catchTags({
+        FetchError: () => Effect.succeed("There was a fetch error"),
+        JsonError: () => Effect.succeed("There was a json error")
+    })
 )
 
 
-Effect.runPromise(main)
+Effect.runPromise(main).then(console.log)
