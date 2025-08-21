@@ -1,10 +1,8 @@
-import { Effect } from 'effect'
+import { Effect, Layer } from 'effect'
 
 // TODO: wrap in a dependency
 import dotenv from 'dotenv'
 import { PokeApi} from './PokeApi.js'
-import { PokemonCollection } from './PokemonCollection.js'
-import { BuildPokeApiUrl } from './BuildPokeApiUrl.js'
 dotenv.config({quiet: true})
 // ====
 
@@ -13,11 +11,11 @@ const program = Effect.gen(function* () {
     return yield* pokeApi.getPokemon;
 })
 
-const runnable = program.pipe(
-    Effect.provideService(PokeApi, PokeApi.Live),
-    Effect.provideService(PokemonCollection, PokemonCollection.Live),
-    Effect.provideServiceEffect(BuildPokeApiUrl, BuildPokeApiUrl.Live),
-)
+
+const MainLayer = Layer.mergeAll(PokeApi.Live)
+
+const runnable = program.pipe(Effect.provide(MainLayer))
+
 
 const main = runnable.pipe(
     Effect.catchTags({
