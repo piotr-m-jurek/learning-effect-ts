@@ -47,6 +47,20 @@ export class PokeApi extends Context.Tag("PokeApi")<
         Layer.provide(
             Layer.mergeAll(PokemonCollection.Live, BuildPokeApiUrl.Live)
         )
+
     )
+
+static readonly Mock = Layer.succeed(
+    this,
+    PokeApi.of({
+        getPokemon: Effect.succeed({
+            id: 1,
+            height: 10,
+            weight: 10,
+            name: "my-name",
+            order: 1,
+        }),
+    })
+);
 
 }

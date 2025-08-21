@@ -6,11 +6,7 @@ export class Pokemon extends Schema.Class<Pokemon>("Pokemon")({
     name: Schema.String,
     height: Schema.Number,
     weight: Schema.Number,
-}) {
-    public get formatHeight(): string {
-        return `${this.height} cm`
-    }
-}
+}) { }
 
 export const decodePokemon = Schema.decodeUnknown(Pokemon)
 

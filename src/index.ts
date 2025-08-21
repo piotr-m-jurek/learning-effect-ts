@@ -3,6 +3,7 @@ import { Effect, Layer } from 'effect'
 // TODO: wrap in a dependency
 import dotenv from 'dotenv'
 import { PokeApi} from './PokeApi.js'
+import { PokeApiUrl } from './PokeApiUrl.js'
 dotenv.config({quiet: true})
 // ====
 
@@ -12,9 +13,11 @@ const program = Effect.gen(function* () {
 })
 
 
-const MainLayer = Layer.mergeAll(PokeApi.Live)
+// const MainLayer = Layer.mergeAll(PokeApi.Live)
+// const runnable = program.pipe(Effect.provide(MainLayer))
 
-const runnable = program.pipe(Effect.provide(MainLayer))
+const MockLayer = Layer.mergeAll(PokeApi.Mock)
+const runnable = program.pipe(Effect.provide(MockLayer))
 
 
 const main = runnable.pipe(
