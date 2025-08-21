@@ -1,24 +1,19 @@
-import { Console, Data, Effect, Schema, } from 'effect'
+import { Data, Effect, Schema, } from 'effect'
 
-interface Pokemon {
-  id: number;
-  order: number;
-  name: string;
-  height: number;
-  weight: number;
-}
 
-const Pokemon = Schema.Struct({
+class Pokemon extends Schema.Class<Pokemon>("Pokemon")({
     id: Schema.Number,
     order: Schema.Number,
     name: Schema.String,
     height: Schema.Number,
     weight: Schema.Number,
-})
+}) {
+    public get formatHeight(): string {
+        return `${this.height} cm`
+    }
+}
 
 const decodePokemon = Schema.decodeUnknown(Pokemon)
-
-
 
 
 class FetchError extends Data.TaggedError("FetchError")<{message?: string}> {}
