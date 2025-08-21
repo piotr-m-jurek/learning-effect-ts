@@ -1,5 +1,13 @@
 import { Console, Effect } from 'effect'
 
-const main = Console.log("Hello, World!")
+const fetchRequest = () => fetch("https://pokeapi.co/api/v2/pokemon/garchomp/")
 
-Effect.runSync(main)
+const jsonRespnse = (response: Response) =>  response.json()
+const main = async () => {
+    const response = await fetchRequest()
+    const json = await jsonRespnse(response)
+
+    return json
+}
+
+main().then(console.log)
