@@ -6,22 +6,27 @@ import * as Effect from "effect/Effect";
 import * as Errors from "./errors.js";
 import * as ParseResult from "effect/ParseResult";
 import * as Schemas from "./schemas.js"
+import { PokemonCollection } from "./PokemonCollection.js";
+import { BuildPokeApiUrl } from "./BuildPokeApiUrl.js";
 
 
-export interface PokeApiImpl {
-    readonly getPokemon: Effect.Effect<
-        Schemas.Pokemon,
-        Errors.FetchError | Errors.JsonError | Errors.ResponseNotOk | ParseResult.ParseError | ConfigError.ConfigError
-    >;
+
+export class PokeApi extends Context.Tag("PokeApi")<PokeApi, typeof make>() {
+    static readonly Live = PokeApi.of(make)
 }
 
-export class PokeApi extends Context.Tag("PokeApi")<PokeApi, PokeApiImpl>() {
-    static readonly Live = PokeApi.of({
+const make = {
         getPokemon: Effect.gen(function* () {
-            const baseUrl = yield* Config.string("BASE_URL");
+            const pokemonCollection = yield* PokemonCollection;
+            const buildPokeApiUrl = yield* BuildPokeApiUrl;
+
+            const requestUrl = buildPokeApiUrl({
+                name: pokemonCollection[0]
+            })
+
 
             const response = yield* Effect.tryPromise({
-            try: () => fetch(`${baseUrl}/api/v2/pokemon/garchomp/`),
+            try: () => fetch(requestUrl),
             catch: (e) => new Errors.FetchError({ message: Errors.makeError(e).message })
         })
 
@@ -36,6 +41,5 @@ export class PokeApi extends Context.Tag("PokeApi")<PokeApi, PokeApiImpl>() {
 
             return yield* Schemas.decodePokemon(json)
         })
-    })
-}
+    }
 
