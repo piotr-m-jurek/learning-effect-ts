@@ -2,8 +2,8 @@ import { Effect, Layer } from 'effect'
 import { PokeApi} from './PokeApi.js'
 
 // TODO: wrap in a dependency
-import dotenv from 'dotenv'
-dotenv.config({quiet: true})
+// import dotenv from 'dotenv'
+// dotenv.config({quiet: true})
 // ====
 
 const program = Effect.gen(function* () {

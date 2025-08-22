@@ -2,7 +2,5 @@ import { Effect } from "effect";
 
 export class PokemonCollection extends Effect.Service<PokemonCollection>()(
     "PokemonCollection",
-    {
-        succeed: ['charmander', 'pikachu']
-    }
+    { succeed: ['charmander', 'pikachu'] }
 ) {}
