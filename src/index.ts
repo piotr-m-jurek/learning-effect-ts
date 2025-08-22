@@ -12,7 +12,7 @@ const program = Effect.gen(function* () {
 })
 
 
-const MainLayer = Layer.mergeAll(PokeApi.Live)
+const MainLayer = Layer.mergeAll(PokeApi.Default)
 const runnable = program.pipe(Effect.provide(MainLayer))
 
 // const MockLayer = Layer.mergeAll(PokeApi.Mock)
