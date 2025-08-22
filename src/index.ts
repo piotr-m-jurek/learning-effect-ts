@@ -1,9 +1,8 @@
 import { Effect, Layer } from 'effect'
+import { PokeApi} from './PokeApi.js'
 
 // TODO: wrap in a dependency
 import dotenv from 'dotenv'
-import { PokeApi} from './PokeApi.js'
-import { PokeApiUrl } from './PokeApiUrl.js'
 dotenv.config({quiet: true})
 // ====
 
