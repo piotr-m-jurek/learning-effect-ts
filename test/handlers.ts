@@ -1,7 +1,7 @@
 import {HttpResponse, http} from "msw"
-import type {Pokemon} from "../src/schemas"
+import type {Pokemon} from "../src/schemas.js"
 
-const mockPokemon: Pokemon = {
+export const mockPokemon: Pokemon = {
     id: 1, 
     height: 10,
     weight: 20,

@@ -39,12 +39,3 @@ export class PokeApi extends Effect.Service<PokeApi>()("PokeApi",
 }
 ){}
 
-export const PokeApiMock = new PokeApi({
-    getPokemon: Effect.succeed({
-        id: 1,
-        height: 10,
-        weight: 10,
-        name: "my-name",
-        order: 1,
-    }),
-})
