@@ -1,4 +1,4 @@
-import { Effect, Layer } from 'effect'
+import { Effect, Layer, ManagedRuntime, Runtime } from 'effect'
 import { PokeApi} from './PokeApi.js'
 import { LiveConfigProviderLayer } from './Config.js';
 
@@ -7,16 +7,13 @@ const program = Effect.gen(function* () {
     return yield* pokeApi.getPokemon;
 })
 
-
 const MainLayer = Layer
     .mergeAll(PokeApi.Default)
     .pipe(Layer.provide(LiveConfigProviderLayer))
 
+const PokemonRuntime = ManagedRuntime.make(MainLayer)
+
 const runnable = program.pipe(Effect.provide(MainLayer))
-
-// const MockLayer = Layer.mergeAll(PokeApi.Mock)
-// const runnable = program.pipe(Effect.provide(MockLayer))
-
 
 const main = runnable.pipe(
     Effect.catchTags({
@@ -27,4 +24,4 @@ const main = runnable.pipe(
     })
 )
 
-Effect.runPromise(main).then(console.log)
+PokemonRuntime.runPromise(main).then(console.log)
